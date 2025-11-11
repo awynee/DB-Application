@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Driver {
     public static void main(String[] args) {
@@ -28,6 +31,64 @@ public class Driver {
                     System.out.println("4. Delete Personnel");
                     System.out.println("5. Back to Main Menu");
                     System.out.print("Choose an option: ");
+                    manageChoice = input.nextInt();
+                    input.nextLine();
+
+                    switch(manageChoice){
+                        case 1:
+                            Connection conn = ConnectDB.getConnection();
+                            PersonnelDAO dao = new PersonnelDAO(conn);
+
+                            System.out.print("Enter personnel name: ");
+                            String name = input.nextLine();
+
+                            System.out.print("Enter personnel department: ");
+                            String department = input.nextLine();
+
+                            System.out.print("Enter personnel role: ");
+                            String role = input.nextLine();
+
+                            Personnel p = new Personnel(name, department, role);
+
+                            dao.addPersonnel(p);
+                            break;
+
+                        case 2:
+                            conn = ConnectDB.getConnection();
+                            dao = new PersonnelDAO(conn);
+
+                            dao.showPersonnel();
+                            break;
+
+                        case 3:
+                            conn = ConnectDB.getConnection();
+                            dao = new PersonnelDAO(conn);
+
+                            dao.showPersonnel();
+
+                            System.out.print("Enter personnel ID to update: ");
+                            int id = input.nextInt();
+                            input.nextLine();
+
+                            System.out.print("Enter new name: ");
+                            name = input.nextLine();
+
+                            System.out.print("Enter new department: ");
+                            department = input.nextLine();
+
+                            System.out.print("Enter new role: ");
+                            role = input.nextLine();
+
+                            p = new Personnel(name, department, role);
+
+                            dao.updatePersonnel(id, p);
+
+                            break;
+
+                        case 4:
+                            break;
+                    }
+
                     break;
 
                 case 2:

@@ -1,0 +1,4 @@
+javac -cp ".;mysql-connector-j-9.5.0.jar" *.java
+java -cp ".;mysql-connector-j-9.5.0.jar" Driver
+
+COPY PASTE TO RUN AND COMPILE WITH SQL DATABASE
