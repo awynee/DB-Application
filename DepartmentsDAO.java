@@ -47,7 +47,6 @@ public class DepartmentsDAO {
         }
     }
 
-
     public void updateDepartment(int departmentId, String newName) {
         String sql = "UPDATE Departments SET department_name = ? WHERE department_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -64,7 +63,6 @@ public class DepartmentsDAO {
         }
     }
 
-    // Delete a department
     public void deleteDepartment(int departmentId) {
         String sql = "DELETE FROM Departments WHERE department_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {

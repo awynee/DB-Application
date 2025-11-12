@@ -15,12 +15,13 @@ public class Driver {
         }
 
         DepartmentsDAO deptDao = new DepartmentsDAO(conn);
-        PersonnelDAO dao = new PersonnelDAO(conn);
+        PersonnelDAO perDao = new PersonnelDAO(conn);
+        CertificationDAO cerDao = new CertificationDAO(conn);
 
         int choice = -1;
 
         do {
-            ClearScreen.clearScreen(); // clear at start of main menu
+            ClearScreen.clearScreen();
             System.out.println("=== TRAINING AND CERTIFICATION MANAGEMENT SYSTEM ===");
             System.out.println("1. Manage Personnel");
             System.out.println("2. Manage Training Programs");
@@ -39,7 +40,7 @@ public class Driver {
                     int manageChoice = -1;
 
                     do {
-                        ClearScreen.clearScreen(); // clear each personnel submenu
+                        ClearScreen.clearScreen();
                         System.out.println("--- MANAGE PERSONNEL ---");
                         System.out.println("1. Add new personnel");
                         System.out.println("2. View Personnel List");
@@ -50,12 +51,12 @@ public class Driver {
                         System.out.print("Choose an option: ");
 
                         manageChoice = input.nextInt();
-                        input.nextLine(); // consume newline
+                        input.nextLine();
 
                         switch (manageChoice) {
                             case 1:
                                 System.out.println("\n=== ADD PERSONNEL ===");
-                                System.out.print("Enter name: ");
+                                System.out.print("Enter personnel name: ");
                                 String name = input.nextLine();
 
                                 deptDao.showDepartments();
@@ -66,27 +67,27 @@ public class Driver {
                                 System.out.print("Enter role: ");
                                 String role = input.nextLine();
 
-                                dao.addPersonnel(new Personnel(name, departmentID, role));
+                                perDao.addPersonnel(new Personnel(name, departmentID, role));
                                 System.out.println("\n=== UPDATED PERSONNEL LIST ===");
-                                dao.showPersonnel();
+                                perDao.showPersonnel();
 
-                                ClearScreen.pause(1500); // pause 1.5 seconds
+                                ClearScreen.pause(1500);
                                 break;
 
                             case 2:
                                 System.out.println("\n=== PERSONNEL LIST ===");
-                                dao.showPersonnel();
+                                perDao.showPersonnel();
                                 ClearScreen.pause(1500);
                                 break;
 
                             case 3:
                                 System.out.println("\n=== UPDATE PERSONNEL ===");
-                                dao.showPersonnel();
+                                perDao.showPersonnel();
                                 System.out.print("Enter personnel ID to update: ");
                                 int updateId = input.nextInt();
                                 input.nextLine();
 
-                                System.out.print("Enter new name: ");
+                                System.out.print("Enter new peronnel name: ");
                                 name = input.nextLine();
 
                                 deptDao.showDepartments();
@@ -97,21 +98,21 @@ public class Driver {
                                 System.out.print("Enter new role: ");
                                 role = input.nextLine();
 
-                                dao.updatePersonnel(updateId, new Personnel(name, departmentID, role));
+                                perDao.updatePersonnel(updateId, new Personnel(name, departmentID, role));
                                 System.out.println("\n=== UPDATED PERSONNEL LIST ===");
-                                dao.showPersonnel();
+                                perDao.showPersonnel();
 
                                 ClearScreen.pause(1500);
                                 break;
 
                             case 4:
                                 System.out.println("\n=== DELETE PERSONNEL ===");
-                                dao.showPersonnel();
+                                perDao.showPersonnel();
                                 System.out.print("Enter personnel ID to delete: ");
                                 int deleteId = input.nextInt();
                                 input.nextLine();
 
-                                dao.deletePersonnel(deleteId);
+                                perDao.deletePersonnel(deleteId);
                                 ClearScreen.pause(1500);
                                 break;
 
@@ -131,10 +132,10 @@ public class Driver {
                                     input.nextLine();
 
                                     switch (viewId) {
-                                        case 1 -> dao.showPersonnelIDs();
-                                        case 2 -> dao.showPersonnelNames();
+                                        case 1 -> perDao.showPersonnelIDs();
+                                        case 2 -> perDao.showPersonnelNames();
                                         case 3 -> deptDao.showDepartments();
-                                        case 4 -> dao.showRoles();
+                                        case 4 -> perDao.showRoles();
                                         case 5 -> System.out.println("Returning to Personnel Menu...");
                                         default -> System.out.println("Invalid option. Try again.");
                                     }
@@ -152,6 +153,78 @@ public class Driver {
                                 ClearScreen.pause(1000);
                         }
                     } while (manageChoice != 6);
+                    break;
+
+                case 2:
+                    manageChoice = -1;
+
+                    System.out.println("--- MANAGE TRAINING PROGRAMS ---");
+                    System.out.println("1. Add New Training Program");
+                    System.out.println("2. View All Training Programs");
+                    System.out.println("3. Update Training Program Information");
+                    System.out.println("4. Delete Training Program");
+                    System.out.println("5. Back to Main Menu");
+                    System.out.print("Choose an option: ");
+                    break;
+
+                case 3:
+                    manageChoice = -1;
+
+                    do {
+                        ClearScreen.clearScreen();
+                        System.out.println("--- MANAGE CERTIFICATIONS ---");
+                        System.out.println("1. Add New Certification");
+                        System.out.println("2. View All Certifications");
+                        System.out.println("3. Update Certification Information");
+                        System.out.println("4. Delete Certification");
+                        System.out.println("5. Back to Main Menu");
+                        System.out.print("Choose an option: ");
+                        manageChoice = input.nextInt();
+                        input.nextLine();
+
+                        switch(manageChoice) {
+                            case 1:
+                                System.out.println("\n=== ADD CERTIFICATION  ===");
+                                cerDao.addCertification();
+                                ClearScreen.pause(1500);
+                                break;
+                            case 2:
+                                System.out.println("\n=== CERTIFICATION LIST ===");
+                                cerDao.showCertifications();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 5:
+                                System.out.println("Returning to main menu...");
+                                ClearScreen.pause(1000);
+                                break;
+                            default:
+                                System.out.println("Invalid option. Try again.");
+                                break;
+                        }
+                    }while(manageChoice != 5);
+                    break;
+
+                case 4:
+                    manageChoice = -1;
+
+                    System.out.println("--- ASSIGN TRAININGS TO PERSONNEL ---");
+                    System.out.println("1. Record New Training for Personnel");
+                    System.out.println("2. Update Training Status (In-Progress / Completed)");
+                    System.out.println("3. View Personnel Training History");
+                    System.out.println("4. Back to Main Menu");
+                    System.out.print("Choose an option: ");
+                    break;
+
+                case 5:
+                    manageChoice = -1;
+
+                    System.out.println("--- ASSIGN CERTIFICATIONS TO PERSONNEL ---");
+                    System.out.println("1. Record New Certification for Personnel");
+                    System.out.println("2. Update Certification Expiry / Renewal Status");
+                    System.out.println("3. View Personnel Certification History");
+                    System.out.println("4. Back to Main Menu");
+                    System.out.print("Choose an option: ");
                     break;
 
                 case 6:

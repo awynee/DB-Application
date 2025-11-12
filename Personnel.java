@@ -17,7 +17,6 @@ public class Personnel {
         this.role = role;
     }
 
-
     public int getPersonnelId() {
         return personnelId;
     }
