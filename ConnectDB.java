@@ -1,20 +1,19 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class ConnectDB {
-    private static final String URL = "jdbc:mysql://localhost:3306/training_db";
-    private static final String USER = "root"; // your DB username
-    private static final String PASSWORD = "yehey123"; // your DB password
+    private static final String URL = "jdbc:mysql://localhost:3306/database_app_db";
+    private static final String USER = "root";
 
-    public static Connection getConnection() {
+    public static Connection getConnection(String password) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // optional in JDBC 4+
-            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            return conn;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, password);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null; // return null if connection fails
+            return null;
         }
     }
 }
