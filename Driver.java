@@ -156,16 +156,155 @@ public class Driver {
                     break;
 
                 case 2:
+                    TrainingProgramDAO tpDao = new TrainingProgramDAO(conn);
                     manageChoice = -1;
 
-                    System.out.println("--- MANAGE TRAINING PROGRAMS ---");
-                    System.out.println("1. Add New Training Program");
-                    System.out.println("2. View All Training Programs");
-                    System.out.println("3. Update Training Program Information");
-                    System.out.println("4. Delete Training Program");
-                    System.out.println("5. Back to Main Menu");
-                    System.out.print("Choose an option: ");
+                    do {
+                        ClearScreen.clearScreen();
+                        System.out.println("--- MANAGE TRAINING PROGRAMS ---");
+                        System.out.println("1. Add New Training Program");
+                        System.out.println("2. View All Training Programs");
+                        System.out.println("3. Update Training Program Information");
+                        System.out.println("4. Delete Training Program");
+                        System.out.println("5. View Specific Columns");
+                        System.out.println("6. View Enrolled Personnel for a Training");
+                        System.out.println("7. Back to Main Menu");
+                        System.out.print("Choose an option: ");
+
+                        manageChoice = input.nextInt();
+                        input.nextLine();
+
+                        switch (manageChoice) {
+
+                            case 1:
+                                System.out.println("\n=== ADD TRAINING PROGRAM ===");
+                                System.out.print("Enter training title: ");
+                                String title = input.nextLine();
+
+                                System.out.print("Enter provider: ");
+                                String provider = input.nextLine();
+
+                                System.out.print("Enter training date (YYYY-MM-DD): ");
+                                java.sql.Date date = java.sql.Date.valueOf(input.nextLine());
+
+                                System.out.print("Enter duration (hours): ");
+                                int duration = input.nextInt();
+                                input.nextLine();
+
+                                System.out.print("Enter cost: ");
+                                double cost = input.nextDouble();
+                                input.nextLine();
+
+                                tpDao.addTrainingProgram(new TrainingProgram(0, title, provider, date, duration, cost));
+
+                                System.out.println("\n=== UPDATED TRAINING PROGRAM LIST ===");
+                                tpDao.showTrainingPrograms();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 2:
+                                System.out.println("\n=== TRAINING PROGRAM LIST ===");
+                                tpDao.showTrainingPrograms();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 3:
+                                System.out.println("\n=== UPDATE TRAINING PROGRAM ===");
+                                tpDao.showTrainingPrograms();
+
+                                System.out.print("Enter training program ID to update: ");
+                                int updateId = input.nextInt();
+                                input.nextLine();
+
+                                System.out.print("Enter new title: ");
+                                title = input.nextLine();
+
+                                System.out.print("Enter new provider: ");
+                                provider = input.nextLine();
+
+                                System.out.print("Enter new training date (YYYY-MM-DD): ");
+                                date = java.sql.Date.valueOf(input.nextLine());
+
+                                System.out.print("Enter new duration (hours): ");
+                                duration = input.nextInt();
+                                input.nextLine();
+
+                                System.out.print("Enter new cost: ");
+                                cost = input.nextDouble();
+                                input.nextLine();
+
+                                tpDao.updateTrainingProgram(updateId,
+                                        new TrainingProgram(updateId, title, provider, date, duration, cost));
+
+                                System.out.println("\n=== UPDATED TRAINING PROGRAM LIST ===");
+                                tpDao.showTrainingPrograms();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 4:
+                                System.out.println("\n=== DELETE TRAINING PROGRAM ===");
+                                tpDao.showTrainingPrograms();
+
+                                System.out.print("Enter training program ID to delete: ");
+                                int deleteId = input.nextInt();
+                                input.nextLine();
+
+                                tpDao.deleteTrainingProgram(deleteId);
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 5:
+                                int viewChoice = -1;
+
+                                do {
+                                    ClearScreen.clearScreen();
+                                    System.out.println("=== VIEW SPECIFIC COLUMNS ===");
+                                    System.out.println("1. Training Program IDs");
+                                    System.out.println("2. Titles");
+                                    System.out.println("3. Providers");
+                                    System.out.println("4. Back to Training Program Menu");
+                                    System.out.print("Choose an option: ");
+
+                                    viewChoice = input.nextInt();
+                                    input.nextLine();
+
+                                    switch (viewChoice) {
+                                        case 1 -> tpDao.showTrainingProgramIDs();
+                                        case 2 -> tpDao.showTrainingTitles();
+                                        case 3 -> System.out.println("No provider-only method yet. (Optional to add)");
+                                        case 4 -> System.out.println("Returning...");
+                                        default -> System.out.println("Invalid option. Try again.");
+                                    }
+                                    ClearScreen.pause(1000);
+                                } while (viewChoice != 4);
+
+                                break;
+
+                            case 6:
+                                System.out.println("\n=== VIEW ENROLLED PERSONNEL ===");
+                                tpDao.showTrainingProgramIDs();
+                                System.out.print("Enter training ID: ");
+                                int tId = input.nextInt();
+                                input.nextLine();
+
+                                tpDao.showTrainingEnrollees(tId);
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 7:
+                                System.out.println("Returning to main menu...");
+                                ClearScreen.pause(1000);
+                                break;
+
+                            default:
+                                System.out.println("Invalid option. Try again.");
+                                ClearScreen.pause(1000);
+                        }
+
+                    } while (manageChoice != 7);
+
                     break;
+
 
                 case 3:
                     manageChoice = -1;
