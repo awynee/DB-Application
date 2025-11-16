@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS Personnel (
     personnel_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,

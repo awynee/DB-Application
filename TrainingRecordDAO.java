@@ -77,10 +77,8 @@ public class TrainingRecordDAO {
         int recordId = input.nextInt();
         input.nextLine();
 
-        // Retrieve personnel_id and training_id for this record
         int personnelId = -1;
         int trainingId = -1;
-
         String findSql = "SELECT personnel_id, training_id FROM TrainingRecord WHERE record_id = ?";
 
         try (PreparedStatement findStmt = conn.prepareStatement(findSql)) {
@@ -101,8 +99,8 @@ public class TrainingRecordDAO {
 
         System.out.print("Enter result (Pass/Fail): ");
         String result = input.nextLine().trim();
-
         String status;
+
         if (result.equalsIgnoreCase("Pass")) {
             status = "Completed";
         } else if (result.equalsIgnoreCase("Fail")) {
@@ -112,7 +110,6 @@ public class TrainingRecordDAO {
             return;
         }
 
-        // Ask user which completion date to use
         System.out.println("\nChoose completion date:");
         System.out.println("1. Use today's date");
         System.out.println("2. Enter custom completion date (YYYY-MM-DD)");
@@ -121,16 +118,12 @@ public class TrainingRecordDAO {
         input.nextLine();
 
         java.sql.Date completionDate;
-
         if (dateChoice == 1) {
-            // TODAY
             completionDate = new java.sql.Date(System.currentTimeMillis());
         } else if (dateChoice == 2) {
-            // CUSTOM
             System.out.print("Enter completion date (YYYY-MM-DD): ");
-            String customDate = input.nextLine();
             try {
-                completionDate = java.sql.Date.valueOf(customDate);
+                completionDate = java.sql.Date.valueOf(input.nextLine());
             } catch (IllegalArgumentException e) {
                 System.out.println("Invalid date. Using today's date instead.");
                 completionDate = new java.sql.Date(System.currentTimeMillis());
@@ -140,10 +133,7 @@ public class TrainingRecordDAO {
             completionDate = new java.sql.Date(System.currentTimeMillis());
         }
 
-        // Update the TrainingRecord
-        String updateSql =
-                "UPDATE TrainingRecord SET status = ?, completion_date = ? WHERE record_id = ?";
-
+        String updateSql = "UPDATE TrainingRecord SET status = ?, completion_date = ? WHERE record_id = ?";
         try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
             updateStmt.setString(1, status);
             updateStmt.setDate(2, completionDate);
@@ -160,34 +150,60 @@ public class TrainingRecordDAO {
             return;
         }
 
-        // Auto-issue certification if passed AND training has cert_id
-        if (result.equalsIgnoreCase("Pass")) {
-            int certId = -1;
-            String certSql = "SELECT cert_id FROM TrainingProgram WHERE training_id = ?";
+        if (status.equals("Completed")) {
+            String certSql = "SELECT tp.cert_id, c.validity_period " +
+                    "FROM TrainingProgram tp " +
+                    "JOIN Certification c ON tp.cert_id = c.cert_id " +
+                    "WHERE tp.training_id = ?";
 
             try (PreparedStatement certStmt = conn.prepareStatement(certSql)) {
                 certStmt.setInt(1, trainingId);
                 try (ResultSet rs = certStmt.executeQuery()) {
                     if (rs.next()) {
-                        certId = rs.getInt("cert_id");
-                        if (rs.wasNull()) {
-                            certId = -1;
+                        int certId = rs.getInt("cert_id");
+                        int validity = rs.getInt("validity_period");
+
+                        // Check if already issued
+                        String checkSql = "SELECT * FROM PersonnelCertification WHERE personnel_id = ? AND cert_id = ?";
+                        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                            checkStmt.setInt(1, personnelId);
+                            checkStmt.setInt(2, certId);
+                            try (ResultSet checkRs = checkStmt.executeQuery()) {
+                                if (checkRs.next()) {
+                                    System.out.println("Certification already issued. Skipping.");
+                                    return;
+                                }
+                            }
                         }
+
+                        // Issue certification
+                        String insertSql = "INSERT INTO PersonnelCertification (personnel_id, cert_id, issue_date, expiry_date) " +
+                                "VALUES (?, ?, ?, ?)";
+                        try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                            java.sql.Date issueDate = completionDate;
+                            java.sql.Date expiryDate = new java.sql.Date(issueDate.getTime());
+                            if (validity > 0) {
+                                expiryDate = new java.sql.Date(issueDate.getTime() + ((long) validity) * 30 * 24 * 60 * 60 * 1000);
+                            }
+
+                            insertStmt.setInt(1, personnelId);
+                            insertStmt.setInt(2, certId);
+                            insertStmt.setDate(3, issueDate);
+                            insertStmt.setDate(4, expiryDate);
+
+                            insertStmt.executeUpdate();
+                            System.out.println("Certification issued successfully!");
+                        }
+
+                    } else {
+                        System.out.println("No certification linked to this training. Skipping auto-issue.");
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("Error retrieving certification: " + e.getMessage());
-            }
-
-            if (certId > 0) {
-                PersonnelCertificationDAO pcDao = new PersonnelCertificationDAO(conn);
-                pcDao.assignCertification(personnelId, certId);
-            } else {
-                System.out.println("No certification linked to this training program. Skipping auto-issue.");
+                System.out.println("Error issuing certification: " + e.getMessage());
             }
         }
     }
-
 
     // Used for Transaction 1 "view training history" (for a specific person)
     public void showTrainingHistoryForPersonnel(int personnelId) {
