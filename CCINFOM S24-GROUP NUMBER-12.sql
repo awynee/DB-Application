@@ -1,4 +1,3 @@
-USE training_db;
 
 CREATE TABLE IF NOT EXISTS Personnel (
     personnel_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,7 +12,9 @@ CREATE TABLE IF NOT EXISTS TrainingProgram (
     provider VARCHAR(100),
     training_date DATE,
     duration INT,
-    cost DECIMAL(10,2)
+    cost DECIMAL(10,2),
+	prerequisite_id INT,
+    cert_id INT
 );
 
 CREATE TABLE IF NOT EXISTS Certification (

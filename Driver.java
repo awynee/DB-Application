@@ -18,6 +18,11 @@ public class Driver {
         PersonnelDAO perDao = new PersonnelDAO(conn);
         CertificationDAO cerDao = new CertificationDAO(conn);
 
+        TrainingProgramDAO tpDao = new TrainingProgramDAO(conn);
+        TrainingRecordDAO trDao = new TrainingRecordDAO(conn);
+        PersonnelCertificationDAO pcDao = new PersonnelCertificationDAO(conn);
+
+
         int choice = -1;
 
         do {
@@ -156,9 +161,8 @@ public class Driver {
                     break;
 
                 case 2:
-                    TrainingProgramDAO tpDao = new TrainingProgramDAO(conn);
-                    manageChoice = -1;
 
+                    manageChoice = -1;
                     do {
                         ClearScreen.clearScreen();
                         System.out.println("--- MANAGE TRAINING PROGRAMS ---");
@@ -347,24 +351,125 @@ public class Driver {
                 case 4:
                     manageChoice = -1;
 
-                    System.out.println("--- ASSIGN TRAININGS TO PERSONNEL ---");
-                    System.out.println("1. Record New Training for Personnel");
-                    System.out.println("2. Update Training Status (In-Progress / Completed)");
-                    System.out.println("3. View Personnel Training History");
-                    System.out.println("4. Back to Main Menu");
-                    System.out.print("Choose an option: ");
+                    do {
+                        ClearScreen.clearScreen();
+                        System.out.println("--- ASSIGN TRAININGS TO PERSONNEL ---");
+                        System.out.println("1. Record New Training for Personnel (Enroll)");
+                        System.out.println("2. Update Training Status (Pass/Fail + Auto-Cert)");
+                        System.out.println("3. View Personnel Training History");
+                        System.out.println("4. Back to Main Menu");
+                        System.out.print("Choose an option: ");
+                        manageChoice = input.nextInt();
+                        input.nextLine();
+
+                        switch (manageChoice) {
+                            case 1:
+                                System.out.println("\n=== ENROLL PERSONNEL IN TRAINING ===");
+                                System.out.println("\n--- PERSONNEL LIST ---");
+                                perDao.showPersonnel();
+                                System.out.println("\n--- TRAINING PROGRAMS ---");
+                                tpDao.showTrainingPrograms();
+
+                                trDao.enrollPersonnelInTraining();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 2:
+                                System.out.println("\n=== UPDATE TRAINING COMPLETION ===");
+                                trDao.showAllTrainingRecords();
+                                trDao.completeTrainingAndIssueCertification();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 3:
+                                System.out.println("\n=== VIEW PERSONNEL TRAINING HISTORY ===");
+                                perDao.showPersonnel();
+                                System.out.print("Enter Personnel ID: ");
+                                int perId = input.nextInt();
+                                input.nextLine();
+
+                                trDao.showTrainingHistoryForPersonnel(perId);
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 4:
+                                System.out.println("Returning to main menu...");
+                                ClearScreen.pause(1000);
+                                break;
+
+                            default:
+                                System.out.println("Invalid option. Try again.");
+                                ClearScreen.pause(1000);
+                        }
+                    } while (manageChoice != 4);
                     break;
+
 
                 case 5:
                     manageChoice = -1;
 
-                    System.out.println("--- ASSIGN CERTIFICATIONS TO PERSONNEL ---");
-                    System.out.println("1. Record New Certification for Personnel");
-                    System.out.println("2. Update Certification Expiry / Renewal Status");
-                    System.out.println("3. View Personnel Certification History");
-                    System.out.println("4. Back to Main Menu");
-                    System.out.print("Choose an option: ");
+                    do {
+                        ClearScreen.clearScreen();
+                        System.out.println("--- ASSIGN CERTIFICATIONS TO PERSONNEL ---");
+                        System.out.println("1. Record New Certification for Personnel (Manual Assign)");
+                        System.out.println("2. Renew Existing Certification");
+                        System.out.println("3. View Personnel Certification History");
+                        System.out.println("4. Back to Main Menu");
+                        System.out.print("Choose an option: ");
+                        manageChoice = input.nextInt();
+                        input.nextLine();
+
+                        switch (manageChoice) {
+                            case 1:
+                                System.out.println("\n=== ASSIGN CERTIFICATION TO PERSONNEL ===");
+                                System.out.println("\n--- PERSONNEL LIST ---");
+                                perDao.showPersonnel();
+
+                                System.out.println("\n=== CERTIFICATION LIST ===");
+                                cerDao.showCertifications();
+
+                                System.out.print("Enter Personnel ID: ");
+                                int perId = input.nextInt();
+                                input.nextLine();
+
+                                System.out.print("Enter Certification ID: ");
+                                int certId = input.nextInt();
+                                input.nextLine();
+
+                                pcDao.assignCertification(perId, certId);
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 2:
+                                System.out.println("\n=== RENEW CERTIFICATION ===");
+                                pcDao.renewCertification();
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 3:
+                                System.out.println("\n=== VIEW PERSONNEL CERTIFICATION HISTORY ===");
+                                perDao.showPersonnel();
+                                System.out.print("Enter Personnel ID: ");
+                                int pId = input.nextInt();
+                                input.nextLine();
+
+                                pcDao.showCertificationHistory(pId);
+                                ClearScreen.pause(1500);
+                                break;
+
+                            case 4:
+                                System.out.println("Returning to main menu...");
+                                ClearScreen.pause(1000);
+                                break;
+
+                            default:
+                                System.out.println("Invalid option. Try again.");
+                                ClearScreen.pause(1000);
+                        }
+
+                    } while (manageChoice != 4);
                     break;
+
 
                 case 6:
                     int deptChoice;
