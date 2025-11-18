@@ -21,9 +21,7 @@ CREATE TABLE IF NOT EXISTS Certification (
     cert_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     issuing_body VARCHAR(100),
-    date_earned DATE,
-    validity_period INT,
-    renewal_status VARCHAR(50)
+    validity_period INT
 );
 
 -- Support tables (not counted as core records)
