@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS Personnel (
     personnel_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -51,3 +52,62 @@ CREATE TABLE IF NOT EXISTS Departments (
     department_name VARCHAR(100) NOT NULL,
     department_manager VARCHAR(100)
 );
+
+INSERT INTO Departments (department_name, department_manager) VALUES
+	('Human Resources', 'Roberto Robertson'),
+	('Finance', 'Paolo Patawaran'),
+	('IT Services', 'Alwayne Dacanay'),
+	('Operations', 'Carlos Austria'),
+	('Marketing', 'John Perez'),
+	('Legal', 'Atty. Kim Possible'),
+	('Quality Assurance', 'Sasa Lele'),
+	('Security', 'Lt. Mark Reyes'),
+	('Training & Development', 'Sarah Lim'),
+	('Logistics', 'Carlos Dizon');
+    
+INSERT INTO Personnel (name, department_id, role) VALUES
+	('Roberto Robertson', 1, 'Department Manager'),
+	('Paolo Patawaran', 2, 'Department Manager'),
+	('Alwayne Dacanay', 3, 'Department Manager'),
+	('Carlos Austria', 4, 'Department Manager'),
+	('John Perez', 5, 'Department Manager'),
+	('Atty. Kim Possible', 6, 'Department Manager'),
+	('Sasa Lele', 7, 'Department Manager'),
+	('Lt. Mark Reyes', 8, 'Department Manager'),
+	('Sarah Lim', 9, 'Department Manager'),
+	('Carlos Dizon', 10, 'Department Manager'),
+	('Peter Mendoza', 1, 'HR Associate'),
+	('Maria Klara', 2, 'Junior Accountant'),
+	('Emilio Sinclair', 3, 'IT Specialist'),
+	('Sosou Frieren', 4, 'Operations Analyst'),
+	('Freddy Fazbear', 5, 'Marketing Coordinator'),
+	('Saul Goodman', 6, 'Legal Assistant'),
+	('Matthew Mercer', 7, 'QA Technician'),
+	('Johnny SilverHand', 8, 'Security Officer'),
+	('Allmind', 9, 'Training Coordinator'),
+	('John Helldiver', 10, 'Logistics Supervisor');
+
+
+INSERT INTO Certification (name, issuing_body, date_earned, validity_period, renewal_status) VALUES
+	('Basic First Aid Certificate', 'Red Cross', '2023-02-10', 2, 'Active'),
+	('Fire Safety Certification', 'BFP', '2023-01-05', 3, 'Active'),
+	('Data Privacy Compliance', 'NPC', '2024-03-01', 1, 'Active'),
+	('IT Security Foundations', 'CompTIA', '2023-10-10', 3, 'Active'),
+	('Leadership Training Cert', 'UST-Center for Leadership', '2022-05-15', 5, 'Active'),
+	('Equipment Handling Cert', 'TESDA', '2024-01-20', 2, 'Active'),
+	('Project Management Basics', 'PMI', '2023-07-18', 3, 'Active'),
+	('Customer Service Excellence', 'CS Academy', '2024-04-10', 1, 'Active'),
+	('Advanced Excel Certificate', 'Microsoft', '2023-11-12', 2, 'Active'),
+	('Company Orientation Cert', 'HR Dept', '2024-09-05', 1, 'Active');
+
+INSERT INTO TrainingProgram (title, provider, training_date, duration, cost, prerequisite_id, cert_id) VALUES
+	('Basic First Aid Training', 'Red Cross', '2024-11-16', 8, 2000.00, NULL, 1),
+	('Fire Safety and Evacuation ', 'Bureau of Fire Protection', '2024-10-20', 6, 1500.00, NULL, 2),
+	('Data Privacy Compliance Workshop', 'National Privacy Commission', '2024-12-05', 4, 1000.00, NULL, 3),
+	('Cybersecurity Awareness Foundations', 'CompTIA', '2025-01-12', 5, 2800.00, 3, 4),
+	('Effective Leadership Essentials', 'UST Leadership Center', '2024-09-10', 12, 3200.00, NULL, 5),
+	('Equipment Operation Level 1', 'TESDA', '2024-08-18', 10, 1800.00, NULL, 6),
+	('Project Management Basics', 'PMI Philippines', '2024-11-03', 6, 2500.00, NULL, 7),
+	('Customer Service Workshop', 'Customer Service Academy', '2024-12-01', 3, 900.00, NULL, 8),
+	('Advanced Excel Data Analysis ', 'Microsoft Philippines', '2024-10-15', 6, 1400.00, NULL, 9),
+	('Company Orientation Program', 'HR Department', '2024-07-20', 2, 500.00, NULL, 10);

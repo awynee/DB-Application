@@ -30,7 +30,7 @@ public class PersonnelDAO {
     public void showPersonnel() {
         String sql = "SELECT p.personnel_id, p.name, d.department_name, p.role " +
                 "FROM Personnel p " +
-                "LEFT JOIN Departments d ON p.department_id = d.department_id";
+                "LEFT JOIN Departments d ON p.department_id = d.department_id"  ;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -40,14 +40,17 @@ public class PersonnelDAO {
                 return;
             }
 
-            System.out.println("\nID | Name | Department | Role");
+            System.out.println("\nID   | Name                 | Department             | Role");
+            System.out.println("---------------------------------------------------------------");
+
             while (rs.next()) {
-                System.out.printf("%d | %s | %s | %s%n",
+                System.out.printf("%-4d | %-20s | %-20s  | %-20s%n",
                         rs.getInt("personnel_id"),
                         rs.getString("name"),
                         rs.getString("department_name") != null ? rs.getString("department_name") : "None",
                         rs.getString("role"));
             }
+
             System.out.println();
         } catch (SQLException e) {
             System.out.println("Error displaying personnel: " + e.getMessage());

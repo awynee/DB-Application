@@ -92,18 +92,21 @@ public class TrainingProgramDAO {
                 return;
             }
 
-            System.out.println("\nID | Title | Provider | Date | Duration (hrs) | Cost | Certification");
+            System.out.println("\n" +
+                    String.format("%-6s | %-35s | %-30s | %-12s | %-15s | %-10s | %-30s",
+                            "ID", "Title", "Provider", "Date", "Duration (hrs)", "Cost", "Certification"));
+            System.out.println("---------------------------------------------------------------------------------------------------------------" +
+                    "------------------------------------------------");
+
             while (rs.next()) {
                 String certName = rs.getString("certification_name");
-                if (certName == null) {
-                    certName = "None";
-                }
+                if (certName == null) certName = "None";
 
-                System.out.printf("%d | %s | %s | %s | %d | %.2f | %s%n",
+                System.out.printf("%-6d | %-35s | %-30s | %-12s | %-15d | %-10.2f | %-30s%n",
                         rs.getInt("training_id"),
                         rs.getString("title"),
                         rs.getString("provider"),
-                        rs.getDate("training_date"),
+                        String.valueOf(rs.getDate("training_date")),
                         rs.getInt("duration"),
                         rs.getDouble("cost"),
                         certName);
@@ -113,6 +116,7 @@ public class TrainingProgramDAO {
             System.out.println("Error displaying training programs: " + e.getMessage());
         }
     }
+
 
 
     public void updateTrainingProgram(int id) {

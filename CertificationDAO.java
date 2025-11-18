@@ -59,22 +59,28 @@ public class CertificationDAO {
                 return;
             }
 
-            System.out.println("\nID | Name | Issuing Body | Validity (Years)");
+            // Header
+            System.out.println("\n" +
+                    String.format("%-6s | %-35s | %-30s | %-17s",
+                            "ID", "Name", "Issuing Body", "Validity (Years)"));
+            System.out.println("---------------------------------------------------------------------------------------------");
 
+            // Rows
             while (rs.next()) {
-                System.out.println(
-                        rs.getInt("cert_id") + " | " +
-                                rs.getString("name") + " | " +
-                                rs.getString("issuing_body") + " | " +
-                                rs.getInt("validity_period")
-                );
+                System.out.printf("%-6d | %-35s | %-30s | %-17d%n",
+                        rs.getInt("cert_id"),
+                        rs.getString("name"),
+                        rs.getString("issuing_body"),
+                        rs.getInt("validity_period"));
             }
+
             System.out.println();
 
         } catch (SQLException e) {
             System.out.println("Error displaying certifications: " + e.getMessage());
         }
     }
+
 
     public void updateCertification() {
         Scanner sc = new Scanner(System.in);
