@@ -109,3 +109,34 @@ INSERT INTO TrainingProgram (title, provider, training_date, duration, cost, cer
     ('Customer Service Workshop', 'Customer Service Academy', '2024-12-01', 3, 900.00, 8),
     ('Advanced Excel Data Analysis', 'Microsoft Philippines', '2024-10-15', 6, 1400.00, 9),
     ('Company Orientation Program', 'HR Department', '2024-07-20', 2, 500.00, 10);
+    
+INSERT INTO PersonnelCertification (personnel_id, cert_id, issue_date, expiry_date) VALUES
+    (11, 1, '2024-11-16', '2026-11-16'),  
+    (12, 2, '2024-10-20', '2027-10-20'), 
+    (13, 4, '2025-01-12', '2028-01-12'), 
+    (14, 6, '2024-08-18', '2026-08-18'),  
+    (15, 9, '2024-10-15', '2026-10-15'), 
+    (16, 3, '2024-12-05', '2025-12-05'),  
+    (17, 7, '2024-11-03', '2027-11-03'),  
+    (18, 8, '2024-12-01', '2025-12-01'), 
+    (19, 5, '2024-09-10', '2029-09-10'),  
+    (20, 10, '2024-07-20', '2025-07-20');
+    
+INSERT INTO TrainingRecord (personnel_id, training_id, status, completion_date) VALUES
+    (11, 1, 'completed', '2024-11-16'),  
+    (12, 2, 'completed', '2024-10-20'),  
+    (13, 4, 'completed', '2025-01-12'),  
+    (14, 6, 'completed', '2024-08-18'), 
+    (15, 9, 'completed', '2024-10-15'), 
+    (16, 3, 'completed', '2024-12-05'),  
+    (17, 7, 'completed', '2024-11-03'),  
+    (18, 8, 'completed', '2024-12-01'),  
+    (19, 5, 'completed', '2024-09-10'), 
+    (20, 10, 'completed', '2024-07-20'), 
+
+    (11, 3, 'in-progress', NULL),  
+    (14, 2, 'in-progress', NULL),     
+    (13, 1, 'failed', NULL),       
+    (18, 4, 'failed', NULL);       
+
+

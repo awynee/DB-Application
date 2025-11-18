@@ -496,19 +496,19 @@ public class Driver {
                         switch (reportChoice) {
 
                             case 1:
-                                System.out.println("\n=== TRAINING PARTICIPATION REPORT ===");
+                                System.out.println("\n=== TRAINING PARTICIPATION REPORT ===\n");
                                 repDao.showTrainingParticipationReport();
                                 ClearScreen.pause(2500);
                                 break;
 
                             case 2:
-                                System.out.println("\n=== TRAINING COMPLETION REPORT ===");
+                                System.out.println("\n=== TRAINING COMPLETION REPORT ===\n");
                                 repDao.showTrainingCompletionReport();
                                 ClearScreen.pause(2500);
                                 break;
 
                             case 3:
-                                System.out.println("\n=== CERTIFICATION STATUS REPORT ===");
+                                System.out.println("\n=== CERTIFICATION STATUS REPORT ===\n");
                                 repDao.showCertificationStatusReport();
                                 ClearScreen.pause(2500);
                                 break;

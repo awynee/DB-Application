@@ -26,8 +26,6 @@ public class ReportsDAO {
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            System.out.println("\n=== TRAINING PARTICIPATION REPORT ===\n");
-
             System.out.printf("%-6s | %-35s | %-9s | %-12s | %-10s | %-7s%n",
                     "ID", "Training Title", "Enrolled", "In-Progress", "Completed", "Failed");
             System.out.println("---------------------------------------------------------------------------------------------");
@@ -62,8 +60,6 @@ public class ReportsDAO {
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-
-            System.out.println("\n=== TRAINING COMPLETION REPORT ===\n");
 
             System.out.printf("%-40s | %-7s | %-7s | %-10s%n",
                     "Training Title", "Passed", "Failed", "Pass Rate");
@@ -102,8 +98,6 @@ public class ReportsDAO {
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-
-            System.out.println("\n=== CERTIFICATION STATUS REPORT ===\n");
 
             System.out.printf("%-30s | %-12s | %-12s%n",
                     "Personnel", "Active Certs", "Expired Certs");
