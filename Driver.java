@@ -22,6 +22,9 @@ public class Driver {
         TrainingRecordDAO trDao = new TrainingRecordDAO(conn);
         PersonnelCertificationDAO pcDao = new PersonnelCertificationDAO(conn);
 
+        ReportsDAO repDao = new ReportsDAO(conn);
+
+
 
         int choice = -1;
 
@@ -33,7 +36,8 @@ public class Driver {
             System.out.println("3. Manage Certifications");
             System.out.println("4. Manage Departments");
             System.out.println("5. Assign Trainings to Personnel");
-            System.out.println("6. Exit Program");
+            System.out.println("6. Generate Reports");
+            System.out.println("7. Exit Program");
             System.out.print("Choose an option: ");
 
             choice = input.nextInt();
@@ -475,6 +479,55 @@ public class Driver {
                     break;
 
                 case 6:
+                    int reportChoice = -1;
+
+                    do {
+                        ClearScreen.clearScreen();
+                        System.out.println("=== REPORTS MENU ===");
+                        System.out.println("1. Training Participation Report");
+                        System.out.println("2. Training Completion Report");
+                        System.out.println("3. Certification Status Report");
+                        System.out.println("4. Back to Main Menu");
+                        System.out.print("Choose an option: ");
+
+                        reportChoice = input.nextInt();
+                        input.nextLine();
+
+                        switch (reportChoice) {
+
+                            case 1:
+                                System.out.println("\n=== TRAINING PARTICIPATION REPORT ===");
+                                repDao.showTrainingParticipationReport();
+                                ClearScreen.pause(2500);
+                                break;
+
+                            case 2:
+                                System.out.println("\n=== TRAINING COMPLETION REPORT ===");
+                                repDao.showTrainingCompletionReport();
+                                ClearScreen.pause(2500);
+                                break;
+
+                            case 3:
+                                System.out.println("\n=== CERTIFICATION STATUS REPORT ===");
+                                repDao.showCertificationStatusReport();
+                                ClearScreen.pause(2500);
+                                break;
+
+                            case 4:
+                                System.out.println("Returning to main menu...");
+                                ClearScreen.pause(1500);
+                                break;
+
+                            default:
+                                System.out.println("Invalid option. Try again.");
+                                ClearScreen.pause(1500);
+                        }
+
+                    } while (reportChoice != 4);
+                    break;
+
+
+                case 7:
                     System.out.println("Exiting program...");
                     ClearScreen.pause(1000);
                     break;
@@ -484,6 +537,6 @@ public class Driver {
                     ClearScreen.pause(1000);
             }
 
-        } while (choice != 6);
+        } while (choice != 7);
     }
 }
